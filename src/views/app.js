@@ -6,10 +6,29 @@ var AppView = Backbone.View.extend({
     this.videos = new Videos(window.exampleVideoData);
     this.render();
     // console.log(this);
+    //this.videos.forEach(this.render, this);
 
-    this.videoList = new VideoListView();
+    this.videoList = new VideoListView({
+      el: this.$('.list'),
+      collection: this.videos,
+    });  
+    
+    this.firstVideo = new Video(window.exampleVideoData[0]);
+    this.renderSelectedVideo(this.firstVideo);
+
+    this.listenTo(videoSelected, 'change', this.renderSelectedVideo);
+   
+  },
+
   
-    this.videoPlayer = new VideoPlayerView();  
+
+  renderSelectedVideo: function(videoSelected) {
+    console.log('called');
+    new VideoPlayerView({
+      el: this.$('.player'),
+      model: this.firstVideo,
+    });
+
   },
 
 
